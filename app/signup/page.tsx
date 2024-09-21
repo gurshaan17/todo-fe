@@ -2,11 +2,13 @@
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,6 +20,10 @@ const Signup: React.FC = () => {
       const response = await axios.post("http://localhost:4000/user/signup", formData);
       setSuccess('User signed up successfully!');
       setError('');
+      if(!response){
+        console.log('be problem')
+      }
+      router.push('/signin');
       // Handle success (e.g., redirect, show success message, etc.)
     } catch (error) {
       setError('Error signing up. Please try again.');
